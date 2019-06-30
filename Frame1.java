@@ -67,15 +67,7 @@ public class Frame1 {
 		
 		btnsubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				//public class fetchdata { (ERROR : Not required to create a separate class I think)
-	
-
-				String connectionString = "jdbc:sap://<connection string>";
-				String user = "<user name>";
-				String password = "<password>";
-				ResultSet rs = null;
-				
+					
 				String Pensionerid=textpensioner.getText();
 				int ID = Integer.parseInt(Pensionerid);
 				int flag;
