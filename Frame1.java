@@ -22,6 +22,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellType;
 
 public class Frame1 {
 	
@@ -66,7 +67,7 @@ public class Frame1 {
 		
 		btnsubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				/* SAP CONNECTION CODE
+				
 				//public class fetchdata { (ERROR : Not required to create a separate class I think)
 	
 
@@ -74,10 +75,12 @@ public class Frame1 {
 				String user = "<user name>";
 				String password = "<password>";
 				ResultSet rs = null;
-
-		
 				
+				String Pensionerid=textpensioner.getText();
+				int ID = Integer.parseInt(Pensionerid);
+				int flag;
 				
+				/* SAP CONNECTION CODE
 				Connection connection = null;
 
 				try {
@@ -136,24 +139,31 @@ public class Frame1 {
 			      while (rowIterator.hasNext()) {
 			         row = (XSSFRow) rowIterator.next();
 			         Iterator < Cell >  cellIterator = row.cellIterator();
-			         
-			         while ( cellIterator.hasNext()) {
-			            Cell cell = cellIterator.next();
-			            
-			            switch (cell.getCellType()) {
-			               
-			               case STRING:
-			                  System.out.print(cell.getStringCellValue() + " \t \t ");
-			                  break;
-			               case NUMERIC:  
-				               double k = cell.getNumericCellValue();
-				               int x = (int)k;
-			            	   System.out.print(x + " \t \t ");
-				               break;
-
+			         flag = 0;
+			         while ( cellIterator.hasNext()) {			          
+			        	Cell cell = cellIterator.next();
+			           
+			            switch (cell.getCellType()) {			      			           
+			              case NUMERIC:  
+				               if (cell.getColumnIndex() == 0 && (int)cell.getNumericCellValue() == ID ) {
+				            	   flag = 1;
+				               }
+			            	   if ( flag == 1 ) {
+			            		   double k = cell.getNumericCellValue();
+			            		   int x = (int)k;
+			            		   System.out.print(x + " \t \t ");
+			            		   break;
+			            	   }
+			            	   else {
+			            		   break;
+			            	   }
+			              case STRING:
+			                  if ( flag == 1 ) {
+			                	  System.out.print(cell.getStringCellValue() + " \t \t ");
+			                	  break;   
+			                  }
 			         }
 			      }
-			      System.out.println();
 			      }
 			      fis.close();
 			      workbook.close();
@@ -209,6 +219,6 @@ public class Frame1 {
 		JLabel label = new JLabel(image);
 		panel.add(label);
 		
-	
+		
 	}
 }
