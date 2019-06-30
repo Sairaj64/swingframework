@@ -80,56 +80,7 @@ public class Frame1 {
 				int ID = Integer.parseInt(Pensionerid);
 				int flag;
 				
-				/* SAP CONNECTION CODE
-				Connection connection = null;
-
-				try {
-				connection = DriverManager.getConnection(connectionString, user, password);
-				} catch (SQLException e) {
-				System.err.println("Connection Failed. User/Passwd Error? Message: " + e.getMessage());
-				return;
-					}
-
-
-				if (connection != null) {
-				try {
-
-
-					System.out.println("Connection to HANA successful!");
-					Statement stmt = connection.createStatement();
-					String Pensionerid=textpensioner.getText();
-				if(Pensionerid.contains("123456"))
-				{
 				
-
-					String sqlfetch = "select idno, name, des, lastdept, address, phoneno, retdate from dummy";
-
-					rs = stmt.executeQuery(sqlfetch);
-
-					String id = rs.getString("idno");
-					String name = rs.getString("name");
-					String designation = rs.getString("des");
-					String lastdept = rs.getString("lastdept");
-					String address = rs.getString("address");
-					String phoneno = rs.getString("phoneno");
-					String retdate = rs.getString("retdate");
-				}
-				   else
-				{
-				JOptionPane.showMessageDialog(null, "invalid Login Details","Login Error",JOptionPane.ERROR_MESSAGE);
-				textpensioner.setText(null);
-				}	 
-
-				    rs.close();
-
-					stmt.close();
-					connection.close();
-				} catch (SQLException e) {
-					System.err.println("Query failed!");
-
-					}
-
-				}*/
 				try { 
 				FileInputStream fis = new FileInputStream(new File("WriteSheet.xlsx"));	       	      
 			      XSSFWorkbook workbook = new XSSFWorkbook(fis);
