@@ -14,7 +14,19 @@ import javax.swing.JTextField;
 import javax.swing.JSeparator;
 import javax.swing.ImageIcon;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.Iterator;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellType;
+
 public class Frame1 {
+	
+	static XSSFRow row;
 
 	private JFrame frame;
 	private JTextField textpensioner;
@@ -55,60 +67,94 @@ public class Frame1 {
 		
 		btnsubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
-				//public class fetchdata { (ERROR : Not required to create a separate class I think)
-	
-				String connectionString = "jdbc:sap://<connection string>";
-				String user = "<user name>";
-				String password = "<password>";
-				ResultSet rs = null;
-
-		
+					
+				String Pensionerid=textpensioner.getText();
+				int ID = Integer.parseInt(Pensionerid);
+				int flag;
 				
 				
-				Connection connection = null;
-				try {
-				connection = DriverManager.getConnection(connectionString, user, password);
-				} catch (SQLException e) {
-				System.err.println("Connection Failed. User/Passwd Error? Message: " + e.getMessage());
-				return;
-					}
-				if (connection != null) {
-				try {
+				try { 
+				FileInputStream fis = new FileInputStream(new File("WriteSheet.xlsx"));	       	      
+			      XSSFWorkbook workbook = new XSSFWorkbook(fis);
+			      XSSFSheet spreadsheet = workbook.getSheetAt(0);
+			      Iterator < Row >  rowIterator = spreadsheet.iterator();
+			      
+			      while (rowIterator.hasNext()) {
+			         row = (XSSFRow) rowIterator.next();
+			         Iterator < Cell >  cellIterator = row.cellIterator();
+			         flag = 0;
+			         while ( cellIterator.hasNext()) {			          
+			        	Cell cell = cellIterator.next();
+			           
+			            switch (cell.getCellType()) {			      			           
+			              case NUMERIC:  
+				               if (cell.getColumnIndex() == 0 && (int)cell.getNumericCellValue() == ID ) {
+				            	   flag = 1;
+				               }
+			            	   if ( flag == 1 ) {
+			            		   double k = cell.getNumericCellValue();
+			            		   int x = (int)k;
+			            		   int z = cell.getColumnIndex();
+			            		   switch (z) {
+			            		   case 0:
+			            		   		int Id = x;
+			            		   		System.out.println("ID: " + Id + "\n");
+			            		   		break;
+			            		   	case 5:
+			            		   		int Ph = x;			            		   		
+			            		   		System.out.println("Phone No.: " + Ph + "\n");
+			            		   		break;
+			            		   	default:
+			            		   		break;
+			            		   }			  
+			            	   }
+			            	   else {
+			            		   break;
+			            	   }
+			              case STRING:
+			            	  
+			            	  if ( flag == 1 ) {
+			            		  if ( cell.getCellType() == CellType.STRING) {
+			            		  String Y = cell.getStringCellValue();
 
-
-					System.out.println("Connection to HANA successful!");
-					Statement stmt = connection.createStatement();
-					String Pensionerid=textpensioner.getText();
-				if(Pensionerid.contains("123456"))
-				{
-				
-
-					String sqlfetch = "select idno, name, des, lastdept, address, phoneno, retdate from dummy";
-					rs = stmt.executeQuery(sqlfetch);
-					String id = rs.getString("idno");
-					String name = rs.getString("name");
-					String designation = rs.getString("des");
-					String lastdept = rs.getString("lastdept");
-					String address = rs.getString("address");
-					String phoneno = rs.getString("phoneno");
-					String retdate = rs.getString("retdate");
+			            		  int z = cell.getColumnIndex();
+			            		  //System.out.println(" " + z + " " + cell.getCellType());
+			            		  switch (z) {
+			            		   	case 1:
+			            		   		String Name = Y;
+			            		   		System.out.println("Name: " + Name + "\n");
+			            		   		break;
+			            		   	case 2:
+			            		   		String Des = Y;
+			            		   		System.out.println("Designation: " + Des + "\n");
+			            		   		break;
+			            		   	case 3:
+			            		   		String Dept = Y;
+			            		   		System.out.println("Last dept: " + Dept + "\n");
+			            		   		break;
+			            		   	case 4:
+			            		   		String Address = Y;
+			            		   		System.out.println("Address: " + Address + "\n");
+			            		   		break;
+			            		   	case 6:
+			            		   		String ReD = Y;
+			            		   		System.out.println("Retirement Date: " + ReD + "\n");
+			            		   		break;
+			                	  }  
+			            		  }
+			            		  }
+			         }
+			      }
+			      }
+			      fis.close();
+			      workbook.close();
 				}
-				   else
-				{
-				JOptionPane.showMessageDialog(null, "invalid Login Details","Login Error",JOptionPane.ERROR_MESSAGE);
-				textpensioner.setText(null);
-				}	 
-				    rs.close();
-					stmt.close();
-					connection.close();
-				} catch (SQLException e) {
-					System.err.println("Query failed!");
-
-					}
-				} 
-		} 
+				catch (Exception e) {
+					
+				}
+		}
 });  
+
 
 
 
@@ -154,6 +200,6 @@ public class Frame1 {
 		JLabel label = new JLabel(image);
 		panel.add(label);
 		
-	
+		
 	}
 }
