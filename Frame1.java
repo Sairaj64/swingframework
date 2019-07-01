@@ -140,6 +140,10 @@ public class Frame1 {
 			            		   		String ReD = Y;
 			            		   		System.out.println("Retirement Date: " + ReD + "\n");
 			            		   		break;
+			            		   	case 7:
+			            		   		String BG = Y;
+			            		   		System.out.println("Blood Group: " + BG + "\n");
+			            		   		break;
 			                	  }  
 			            		  }
 			            		  }
